@@ -1,0 +1,12 @@
+node_modules
+package-lock.json
+package.json
+.vscode
+coverage
+src/db/migration
+src/db/subscriber
+build
+DOCS.md
+README.md
+logs
+.husky

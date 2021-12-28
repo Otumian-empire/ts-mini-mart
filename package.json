@@ -1,0 +1,69 @@
+{
+	"name": "ts-mini-mart",
+	"version": "1.0.0",
+	"description": "A fake Online Mini Mart Interface build Typescript, TypeORM and Postgres",
+	"main": "src/index.ts",
+	"scripts": {
+		"dev": "npx nodemon",
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "clear && npx ts-node src/index.ts",
+		"typeorm": "npx ts-node ./node_modules/typeorm/cli.js",
+		"sync-db": "npx ts-node ./node_modules/typeorm/cli.js schema:sync",
+		"build": "npx tsc",
+		"check-format": "npx prettier --check src DOCS.md README.md",
+		"check-lint": "npx eslint src --ext ts",
+		"format": "npx prettier --write src DOCS.md README.md",
+		"lint": "npx eslint src --ext ts --fix",
+		"check-all": "npm run check-format && npm run check-lint",
+		"fix-all": "npm run format && npm run lint",
+		"prepare": "npx husky-init && npm install && husky install",
+    "git": "git add . && git commit"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Otumian-empire/ts-mini-mart.git"
+	},
+	"keywords": [
+		"ts",
+		"typescript",
+		"javascript",
+		"typeorm",
+		"postgres",
+		"mini",
+		"project",
+		"online",
+		"otumian",
+		"ts-mini-mart",
+		"mart"
+	],
+	"bugs": {
+		"url": "https://github.com/Otumian-empire/ts-mini-mart/issues"
+	},
+	"homepage": "https://github.com/Otumian-empire/ts-mini-mart#readme",
+	"author": "popecan1000@gmail.com",
+	"license": "MIT",
+	"devDependencies": {
+		"@types/cors": "^2.8.12",
+		"@types/dotenv": "^8.2.0",
+		"@types/express": "^4.17.13",
+		"@types/node": "^8.0.29",
+		"@typescript-eslint/eslint-plugin": "^5.8.1",
+		"@typescript-eslint/parser": "^5.8.1",
+		"dotenv": "^10.0.0",
+		"eslint": "^8.5.0",
+		"eslint-config-prettier": "^8.3.0",
+		"husky": "^7.0.0",
+		"nodemon": "^2.0.15",
+		"prettier": "^2.5.1",
+		"ts-node": "3.3.0",
+		"typeorm": "^0.2.41",
+		"typescript": "3.3.3333"
+	},
+	"dependencies": {
+		"cors": "^2.8.5",
+		"express": "^4.17.2",
+		"pg": "^8.4.0",
+		"reflect-metadata": "^0.1.10",
+		"typeorm": "0.2.41"
+	}
+}
