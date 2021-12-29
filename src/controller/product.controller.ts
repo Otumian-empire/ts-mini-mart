@@ -1,20 +1,13 @@
 import { Request, Response } from "express";
 
 import { Product } from "../db/entity/product";
-
-type ProductReqType = {
-  name: string;
-  description: string;
-  price: number;
-  count: number;
-};
-
-type ResponseType = { success: boolean; message: string };
+import { ProductReqType, ResponseType } from "../utils/types";
+import apiMessages from "../utils/api_messages";
 
 export const create = async (req: Request, res: Response) => {
   const response: ResponseType = {
     success: false,
-    message: "An error occurred"
+    message: apiMessages.AN_ERROR_OCCURRED
   };
 
   try {
@@ -24,7 +17,7 @@ export const create = async (req: Request, res: Response) => {
     await product.save();
 
     response.success = true;
-    response.message = "Created successfully";
+    response.message = apiMessages.CREATED_SUCCESSFULLY;
   } catch (err) {
     console.log(err);
   }
@@ -47,7 +40,7 @@ export const readAll = async (req_: Request, res: Response) => {
 export const readOne = async (req: Request, res: Response) => {
   const response: ResponseType = {
     success: false,
-    message: "Invalid product"
+    message: apiMessages.INVALID_PRODUCT
   };
 
   try {
@@ -66,7 +59,7 @@ export const readOne = async (req: Request, res: Response) => {
 export const updateOne = async (req: Request, res: Response) => {
   const response: ResponseType = {
     success: false,
-    message: "An error occurred"
+    message: apiMessages.AN_ERROR_OCCURRED
   };
 
   try {
@@ -83,7 +76,7 @@ export const updateOne = async (req: Request, res: Response) => {
     await product.save();
 
     response.success = true;
-    response.message = "Updated successfully";
+    response.message = apiMessages.UPDATED_SUCCESSFULLY;
   } catch (error) {
     console.log(error);
   }
@@ -94,7 +87,7 @@ export const updateOne = async (req: Request, res: Response) => {
 export const deleteOne = async (req: Request, res: Response) => {
   const response: ResponseType = {
     success: false,
-    message: "An error occurred"
+    message: apiMessages.AN_ERROR_OCCURRED
   };
 
   try {
@@ -104,7 +97,7 @@ export const deleteOne = async (req: Request, res: Response) => {
     await product.remove();
 
     response.success = true;
-    response.message = "Deleted successfully";
+    response.message = apiMessages.DELETED_SUCCESSFULLY;
   } catch (error) {
     console.log(error);
   }

@@ -1,19 +1,17 @@
 import { Request, Response } from "express";
 
 import { User } from "../db/entity/user";
-
-type UserReqType = { name: string; email: string; address: string };
-type ResponseType = { success: boolean; message: string };
-type UpdateOneUserReqType = {
-  userId: number;
-  email: string;
-  address: string;
-};
+import apiMessages from "../utils/api_messages";
+import {
+  ResponseType,
+  UserReqType,
+  UpdateOneUserReqType
+} from "../utils/types";
 
 export const create = async (req: Request, res: Response) => {
   const response: ResponseType = {
     success: false,
-    message: "An error occurred"
+    message: apiMessages.AN_ERROR_OCCURRED
   };
 
   try {
@@ -23,7 +21,7 @@ export const create = async (req: Request, res: Response) => {
     await user.save();
 
     response.success = true;
-    response.message = "Created successfully";
+    response.message = apiMessages.CREATED_SUCCESSFULLY;
   } catch (err) {
     console.log(err);
   }
@@ -46,7 +44,7 @@ export const readAll = async (_req: Request, res: Response) => {
 export const readOne = async (req: Request, res: Response) => {
   const response: ResponseType = {
     success: false,
-    message: "Invalid user"
+    message: apiMessages.INVALID_USER
   };
 
   try {
@@ -65,7 +63,7 @@ export const readOne = async (req: Request, res: Response) => {
 export const updateOne = async (req: Request, res: Response) => {
   const response: ResponseType = {
     success: false,
-    message: "An error occurred"
+    message: apiMessages.AN_ERROR_OCCURRED
   };
 
   try {
@@ -80,7 +78,7 @@ export const updateOne = async (req: Request, res: Response) => {
     await user.save();
 
     response.success = true;
-    response.message = "Updated successfully";
+    response.message = apiMessages.UPDATED_SUCCESSFULLY;
   } catch (error) {
     console.log(error);
   }
@@ -91,7 +89,7 @@ export const updateOne = async (req: Request, res: Response) => {
 export const deleteOne = async (req: Request, res: Response) => {
   const response: ResponseType = {
     success: false,
-    message: "An error occurred"
+    message: apiMessages.AN_ERROR_OCCURRED
   };
 
   try {
@@ -101,7 +99,7 @@ export const deleteOne = async (req: Request, res: Response) => {
     await user.remove();
 
     response.success = true;
-    response.message = "Deleted successfully";
+    response.message = apiMessages.DELETED_SUCCESSFULLY;
   } catch (error) {
     console.log(error);
   }

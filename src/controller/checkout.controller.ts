@@ -4,17 +4,14 @@ import { Checkout } from "../db/entity/checkout";
 import { Cart } from "../db/entity/cart";
 import { User } from "../db/entity/user";
 import { Product } from "../db/entity/product";
-
-type ResponseType = { success: boolean; message: string };
-
-const convertMoneyToNumber = (money: string): number => {
-  return Number(money.substring(1).trim());
-};
+import { ResponseType } from "../utils/types";
+import { convertMoneyToNumber } from "../utils/helpers";
+import apiMessages from "../utils/api_messages";
 
 export const create = async (req: Request, res: Response) => {
   const response: ResponseType = {
     success: false,
-    message: "An error occurred"
+    message: apiMessages.AN_ERROR_OCCURRED
   };
 
   try {
@@ -27,7 +24,7 @@ export const create = async (req: Request, res: Response) => {
 
     if (userCartItems.length < 1) {
       response.success = false;
-      response.message = "Cart is empty";
+      response.message = apiMessages.CART_IS_EMPTY;
 
       return res.json(response);
     }
@@ -80,7 +77,7 @@ export const create = async (req: Request, res: Response) => {
     userCartItems.forEach(async (cartItem) => await cartItem.remove());
 
     response.success = true;
-    response.message = "Created successfully";
+    response.message = apiMessages.CREATED_SUCCESSFULLY;
   } catch (err) {
     console.log(err);
   }
@@ -121,7 +118,7 @@ export const readOne = async (req: Request, res: Response) => {
 export const deleteOne = async (req: Request, res: Response) => {
   const response = {
     success: false,
-    message: "An error occurred"
+    message: apiMessages.AN_ERROR_OCCURRED
   };
 
   try {
@@ -133,7 +130,7 @@ export const deleteOne = async (req: Request, res: Response) => {
     checkouts.forEach(async (item) => await item.remove());
 
     response.success = true;
-    response.message = "Deleted successfully";
+    response.message = apiMessages.DELETED_SUCCESSFULLY;
   } catch (error) {
     console.log(error);
   }
@@ -144,7 +141,7 @@ export const deleteOne = async (req: Request, res: Response) => {
 export const deleteOneSpecific = async (req: Request, res: Response) => {
   const response = {
     success: false,
-    message: "An error occurred"
+    message: apiMessages.AN_ERROR_OCCURRED
   };
 
   try {
@@ -157,7 +154,7 @@ export const deleteOneSpecific = async (req: Request, res: Response) => {
     checkouts.forEach(async (item) => await item.remove());
 
     response.success = true;
-    response.message = "Deleted successfully";
+    response.message = apiMessages.DELETED_SUCCESSFULLY;
   } catch (error) {
     console.log(error);
   }

@@ -2,26 +2,17 @@ import { Request, Response } from "express";
 
 import { Cart } from "../db/entity/cart";
 import { Product } from "../db/entity/product";
-
-type CartReqType = {
-  userId: number;
-  productId: number;
-  productCount: number;
-};
-
-type ResponseType = {
-  success: boolean;
-  message: string;
-};
+import { CartRequestType, ResponseType } from "../utils/types";
+import apiMessages from "../utils/api_messages";
 
 export const create = async (req: Request, res: Response) => {
   const response: ResponseType = {
     success: false,
-    message: "An error occurred"
+    message: apiMessages.AN_ERROR_OCCURRED
   };
 
   try {
-    const { userId, productId, productCount }: CartReqType = req.body;
+    const { userId, productId, productCount }: CartRequestType = req.body;
 
     // throws error is product of said Id doesn't exist
     const product: Product = await Product.findOneOrFail({ id: productId });
@@ -48,7 +39,7 @@ export const create = async (req: Request, res: Response) => {
     await cart.save();
 
     response.success = true;
-    response.message = "Added successfully";
+    response.message = apiMessages.ADDED_SUCCESSFULLY;
   } catch (err) {
     console.log(err);
   }
@@ -85,7 +76,7 @@ export const readOne = async (req: Request, res: Response) => {
 export const readOneSpecific = async (req: Request, res: Response) => {
   const response: ResponseType = {
     success: false,
-    message: "Invalid Cart"
+    message: apiMessages.INVALID_CART
   };
 
   try {
@@ -105,7 +96,7 @@ export const readOneSpecific = async (req: Request, res: Response) => {
 export const updateOne = async (req: Request, res: Response) => {
   const response = {
     success: false,
-    message: "An error occurred"
+    message: apiMessages.AN_ERROR_OCCURRED
   };
 
   try {
@@ -119,7 +110,7 @@ export const updateOne = async (req: Request, res: Response) => {
     await cart.save();
 
     response.success = true;
-    response.message = "Updated successfully";
+    response.message = apiMessages.UPDATED_SUCCESSFULLY;
   } catch (error) {
     console.log(error);
   }
@@ -130,7 +121,7 @@ export const updateOne = async (req: Request, res: Response) => {
 export const deleteOne = async (req: Request, res: Response) => {
   const response = {
     success: false,
-    message: "An error occurred"
+    message: apiMessages.AN_ERROR_OCCURRED
   };
 
   try {
@@ -140,7 +131,7 @@ export const deleteOne = async (req: Request, res: Response) => {
     cartItems.forEach(async (item) => await item.remove());
 
     response.success = true;
-    response.message = "Deleted successfully";
+    response.message = apiMessages.DELETED_SUCCESSFULLY;
   } catch (error) {
     console.log(error);
   }
@@ -151,7 +142,7 @@ export const deleteOne = async (req: Request, res: Response) => {
 export const deleteOneSpecific = async (req: Request, res: Response) => {
   const response: ResponseType = {
     success: false,
-    message: "An error occurred"
+    message: apiMessages.AN_ERROR_OCCURRED
   };
 
   try {
@@ -162,7 +153,7 @@ export const deleteOneSpecific = async (req: Request, res: Response) => {
     await cartItem.remove();
 
     response.success = true;
-    response.message = "Deleted successfully";
+    response.message = apiMessages.DELETED_SUCCESSFULLY;
   } catch (error) {
     console.log(error);
   }
