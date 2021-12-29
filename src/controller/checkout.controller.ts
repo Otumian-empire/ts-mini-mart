@@ -5,7 +5,6 @@ import { Cart } from "../db/entity/cart";
 import { User } from "../db/entity/user";
 import { Product } from "../db/entity/product";
 
-// type UserReqType = { name: string; email: string; address: string };
 type ResponseType = { success: boolean; message: string };
 
 const convertMoneyToNumber = (money: string): number => {
@@ -24,16 +23,18 @@ export const create = async (req: Request, res: Response) => {
     // throws error if the user with `userId` doesn't exist
     await User.findOneOrFail({ id: userId });
 
-    const userCartItems = await Cart.find({ userId });
+    const userCartItems: Cart[] = await Cart.find({ userId });
 
     if (userCartItems.length < 1) {
-      response.success = true;
+      response.success = false;
       response.message = "Cart is empty";
+
       return res.json(response);
     }
 
     const productIds: number[] = [];
     const productCounts: number[] = [];
+
     let totalCost = 0;
 
     for (const { productId, productCount } of userCartItems) {
@@ -76,9 +77,7 @@ export const create = async (req: Request, res: Response) => {
     }
 
     // delete the cart after checkout
-    userCartItems.forEach(async (cartItem) => {
-      await cartItem.remove();
-    });
+    userCartItems.forEach(async (cartItem) => await cartItem.remove());
 
     response.success = true;
     response.message = "Created successfully";
@@ -131,10 +130,7 @@ export const deleteOne = async (req: Request, res: Response) => {
     await User.findOneOrFail({ id: userId });
 
     const checkouts = await Checkout.find({ userId });
-
-    checkouts.forEach(async (item) => {
-      await item.remove();
-    });
+    checkouts.forEach(async (item) => await item.remove());
 
     response.success = true;
     response.message = "Deleted successfully";
@@ -158,10 +154,7 @@ export const deleteOneSpecific = async (req: Request, res: Response) => {
     await User.findOneOrFail({ id: userId });
 
     const checkouts = await Checkout.find({ userId, id: checkoutId });
-
-    checkouts.forEach(async (item) => {
-      await item.remove();
-    });
+    checkouts.forEach(async (item) => await item.remove());
 
     response.success = true;
     response.message = "Deleted successfully";

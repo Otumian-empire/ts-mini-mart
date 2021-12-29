@@ -24,8 +24,8 @@ checkoutRoutes(app);
 
 createConnection()
   .then(async () => {
-    app.listen(PORT, () =>
-      console.log(`Listening on http://localhost:${PORT}`)
-    );
+    app.listen(PORT, () => {
+      console.log(`Listening on http://localhost:${PORT}`);
+    });
   })
   .catch((error) => console.log(error));

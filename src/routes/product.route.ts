@@ -11,7 +11,7 @@ import {
 export const productRoutes = (app: Application) => {
   app.post("/product", create);
   app.get("/product", readAll);
-  app.get("/product/:id", readOne);
+  app.get("/product/:productId", readOne);
   app.put("/product", updateOne);
   app.delete("/product", deleteOne);
 };

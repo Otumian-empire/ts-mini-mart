@@ -11,7 +11,7 @@ import {
 export const userRoutes = (app: Application) => {
   app.post("/user", create);
   app.get("/user", readAll);
-  app.get("/user/:id", readOne);
+  app.get("/user/:userId", readOne);
   app.put("/user", updateOne);
-  app.delete("/user/:id", deleteOne);
+  app.delete("/user/:userId", deleteOne);
 };

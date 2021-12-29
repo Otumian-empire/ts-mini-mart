@@ -9,8 +9,13 @@ type CartReqType = {
   productCount: number;
 };
 
+type ResponseType = {
+  success: boolean;
+  message: string;
+};
+
 export const create = async (req: Request, res: Response) => {
-  const response = {
+  const response: ResponseType = {
     success: false,
     message: "An error occurred"
   };
@@ -19,14 +24,14 @@ export const create = async (req: Request, res: Response) => {
     const { userId, productId, productCount }: CartReqType = req.body;
 
     // throws error is product of said Id doesn't exist
-    const products = await Product.findOneOrFail({ id: productId });
+    const product: Product = await Product.findOneOrFail({ id: productId });
 
-    // user can not buy more than in  currently (at the time of making
-    // the request)
-    if (productCount > products.count) {
+    // user can not buy more than the quantity of products in  currently
+    // (at the time of making the request)
+    if (productCount > product.count) {
       response.success = false;
-      response.message = `Insufficient Product Available (${products.count})`;
-      // throw new Error("You are requesting for more than is available");
+      response.message = `Insufficient ${product.name} available (${product.count})`;
+
       return res.json(response);
     }
 
@@ -51,7 +56,7 @@ export const create = async (req: Request, res: Response) => {
   return res.json(response);
 };
 
-export const readAll = async (req: Request, res: Response) => {
+export const readAll = async (_req: Request, res: Response) => {
   let products: Cart[] = [];
 
   try {
@@ -68,6 +73,7 @@ export const readOne = async (req: Request, res: Response) => {
 
   try {
     const userId = Number(req.params.userId);
+
     carts = await Cart.find({ userId });
   } catch (err) {
     console.log(err);
@@ -77,7 +83,7 @@ export const readOne = async (req: Request, res: Response) => {
 };
 
 export const readOneSpecific = async (req: Request, res: Response) => {
-  const response = {
+  const response: ResponseType = {
     success: false,
     message: "Invalid Cart"
   };
@@ -103,16 +109,13 @@ export const updateOne = async (req: Request, res: Response) => {
   };
 
   try {
-    const userId = Number(req.body.userId);
     const cartId = Number(req.params.cartId);
+    const userId = Number(req.body.userId);
+    const productCount = Number(req.body.productCount);
 
     const cart: Cart = await Cart.findOneOrFail({ userId, id: cartId });
 
-    const productCount: number =
-      Number(req.body.productCount) || cart.productCount;
-
-    cart.productCount = productCount;
-
+    cart.productCount = productCount || cart.productCount;
     await cart.save();
 
     response.success = true;
@@ -134,7 +137,6 @@ export const deleteOne = async (req: Request, res: Response) => {
     const userId = Number(req.body.userId);
 
     const cartItems: Cart[] = await Cart.find({ userId });
-
     cartItems.forEach(async (item) => await item.remove());
 
     response.success = true;
@@ -147,7 +149,7 @@ export const deleteOne = async (req: Request, res: Response) => {
 };
 
 export const deleteOneSpecific = async (req: Request, res: Response) => {
-  const response = {
+  const response: ResponseType = {
     success: false,
     message: "An error occurred"
   };
@@ -157,7 +159,6 @@ export const deleteOneSpecific = async (req: Request, res: Response) => {
     const cartId = Number(req.params.cartId);
 
     const cartItem: Cart = await Cart.findOneOrFail({ userId, id: cartId });
-
     await cartItem.remove();
 
     response.success = true;

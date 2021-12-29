@@ -45,6 +45,7 @@ Import `ts-mini-mart.postman_collection.json` into postman
 - For a request that writes to the database, the (`ID` of the) item should be passed in the request body but not in the request parameter.
 - For a request that writes to the database, if the (`ID` of the) item depends on another, say `Cart` depends on `User`, and we wish to delete `Cart`, pass `User` in the request body and pass `Cart` in the request parameter.
 - Use `.env` over `ormconfig.[ts, js, env, json]`. We can easily add our `ENVIRONMENTAL VARIABLES`.
+- For an arrow function that is a one-liner but is formatted to the next line, use braces.
 
 ## Warning
 

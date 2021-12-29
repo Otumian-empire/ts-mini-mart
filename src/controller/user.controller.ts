@@ -4,6 +4,11 @@ import { User } from "../db/entity/user";
 
 type UserReqType = { name: string; email: string; address: string };
 type ResponseType = { success: boolean; message: string };
+type UpdateOneUserReqType = {
+  userId: number;
+  email: string;
+  address: string;
+};
 
 export const create = async (req: Request, res: Response) => {
   const response: ResponseType = {
@@ -15,12 +20,10 @@ export const create = async (req: Request, res: Response) => {
     const { name, email, address }: UserReqType = req.body;
 
     const user = User.create({ name, email, address });
-    const savedUser = await user.save();
+    await user.save();
 
-    if (savedUser) {
-      response.success = true;
-      response.message = "Created successfully";
-    }
+    response.success = true;
+    response.message = "Created successfully";
   } catch (err) {
     console.log(err);
   }
@@ -41,19 +44,22 @@ export const readAll = async (_req: Request, res: Response) => {
 };
 
 export const readOne = async (req: Request, res: Response) => {
+  const response: ResponseType = {
+    success: false,
+    message: "Invalid user"
+  };
+
   try {
-    const id = Number(req.params.id);
-    const user: User = await User.findOneOrFail({ id });
+    const userId = Number(req.params.userId);
+
+    const user: User = await User.findOneOrFail({ id: userId });
 
     return res.json(user);
   } catch (err) {
     console.log(err);
   }
 
-  return res.status(404).json({
-    success: false,
-    message: "Invalid user"
-  });
+  return res.json(response);
 };
 
 export const updateOne = async (req: Request, res: Response) => {
@@ -63,9 +69,7 @@ export const updateOne = async (req: Request, res: Response) => {
   };
 
   try {
-    const userId = Number(req.body.userId);
-    const email: string = req.body.email;
-    const address: string = req.body.address;
+    const { userId, email, address }: UpdateOneUserReqType = req.body;
 
     const user: User = await User.findOneOrFail({ id: userId });
 
@@ -85,21 +89,19 @@ export const updateOne = async (req: Request, res: Response) => {
 };
 
 export const deleteOne = async (req: Request, res: Response) => {
-  const response = {
+  const response: ResponseType = {
     success: false,
     message: "An error occurred"
   };
 
   try {
-    const id: number = Number(req.params.id) as number;
-    const user: User = await User.findOneOrFail({ id });
+    const userId = Number(req.params.userId);
 
-    const removedUser = await user.remove();
+    const user: User = await User.findOneOrFail({ id: userId });
+    await user.remove();
 
-    if (removedUser) {
-      response.success = true;
-      response.message = "Deleted successfully";
-    }
+    response.success = true;
+    response.message = "Deleted successfully";
   } catch (error) {
     console.log(error);
   }

@@ -9,22 +9,18 @@ type ProductReqType = {
   count: number;
 };
 
+type ResponseType = { success: boolean; message: string };
+
 export const create = async (req: Request, res: Response) => {
-  const response = {
+  const response: ResponseType = {
     success: false,
     message: "An error occurred"
   };
 
   try {
-    const {
-      name,
-      description,
-      price = 0,
-      count = 0
-    }: ProductReqType = req.body;
+    const { name, description, price, count }: ProductReqType = req.body;
 
     const product = Product.create({ name, description, price, count });
-
     await product.save();
 
     response.success = true;
@@ -36,7 +32,7 @@ export const create = async (req: Request, res: Response) => {
   return res.json(response);
 };
 
-export const readAll = async (req: Request, res: Response) => {
+export const readAll = async (req_: Request, res: Response) => {
   let products: Product[] = [];
 
   try {
@@ -49,42 +45,40 @@ export const readAll = async (req: Request, res: Response) => {
 };
 
 export const readOne = async (req: Request, res: Response) => {
+  const response: ResponseType = {
+    success: false,
+    message: "Invalid product"
+  };
+
   try {
-    const id = Number(req.params.id);
-    const product: Product = await Product.findOneOrFail({ id });
+    const productId = Number(req.params.productId);
+
+    const product: Product = await Product.findOneOrFail({ id: productId });
 
     return res.json(product);
   } catch (err) {
     console.log(err);
   }
 
-  return res.status(404).json({
-    success: false,
-    message: "Invalid product"
-  });
+  return res.json(response);
 };
 
 export const updateOne = async (req: Request, res: Response) => {
-  const response = {
+  const response: ResponseType = {
     success: false,
     message: "An error occurred"
   };
 
   try {
     const productId = Number(req.body.productId);
+    const { name, description, price, count }: ProductReqType = req.body;
+
     const product: Product = await Product.findOneOrFail({ id: productId });
 
-    const {
-      name = product.name,
-      description = product.description,
-      price = product.price,
-      count = product.count
-    }: ProductReqType = req.body;
-
-    product.name = name;
-    product.description = description;
-    product.price = price;
-    product.count = count;
+    product.name = name || product.name;
+    product.description = description || product.description;
+    product.price = price || product.price;
+    product.count = count || product.count;
 
     await product.save();
 
@@ -98,16 +92,16 @@ export const updateOne = async (req: Request, res: Response) => {
 };
 
 export const deleteOne = async (req: Request, res: Response) => {
-  const response = {
+  const response: ResponseType = {
     success: false,
     message: "An error occurred"
   };
 
   try {
     const productId = Number(req.body.productId);
-    const user: Product = await Product.findOneOrFail({ id: productId });
 
-    await user.remove();
+    const product: Product = await Product.findOneOrFail({ id: productId });
+    await product.remove();
 
     response.success = true;
     response.message = "Deleted successfully";
