@@ -93,7 +93,7 @@ export const deleteOne = async (req: Request, res: Response) => {
   };
 
   try {
-    const userId = Number(req.params.userId);
+    const userId = Number(req.body.userId);
 
     const user: User = await User.findOneOrFail({ id: userId });
     await user.remove();

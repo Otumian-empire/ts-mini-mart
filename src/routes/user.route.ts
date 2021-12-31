@@ -13,5 +13,5 @@ export const userRoutes = (app: Application) => {
   app.get("/user", readAll);
   app.get("/user/:userId", readOne);
   app.put("/user", updateOne);
-  app.delete("/user/:userId", deleteOne);
+  app.delete("/user", deleteOne);
 };
