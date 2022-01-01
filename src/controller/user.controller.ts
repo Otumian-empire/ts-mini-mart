@@ -67,11 +67,12 @@ export const updateOne = async (req: Request, res: Response) => {
   };
 
   try {
-    const { userId, email, address }: UpdateOneUserReqType = req.body;
+    const { userId, email, name, address }: UpdateOneUserReqType = req.body;
 
     const user: User = await User.findOneOrFail({ id: userId });
 
     user.email = email || user.email;
+    user.name = name || user.name;
     user.address = address || user.address;
 
     // an error will be thrown if user.save() fails

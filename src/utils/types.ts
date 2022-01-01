@@ -24,6 +24,7 @@ export type UserReqType = {
 
 export type UpdateOneUserReqType = {
   userId: number;
+  name: string;
   email: string;
   address: string;
 };
