@@ -1,6 +1,6 @@
 {
 	"name": "ts-mini-mart",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"description": "A fake Online Mini Mart Interface build Typescript, TypeORM and Postgres",
 	"main": "src/index.ts",
 	"scripts": {
@@ -17,7 +17,7 @@
 		"check-all": "npm run check-format && npm run check-lint",
 		"fix-all": "npm run format && npm run lint",
 		"prepare": "npx husky-init && npm install && husky install",
-    "git": "git add . && git commit"
+		"git": "git add . && git commit"
 	},
 	"repository": {
 		"type": "git",
